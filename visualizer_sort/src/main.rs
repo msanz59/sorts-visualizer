@@ -1,61 +1,89 @@
 mod sort;
-use std::io;
+use std::{io};
 
 fn main() {
-    // Bubble Sort
-    let mut vec1 = vec![5, 3, 8, 6, 2];
-    println!("=== BUBBLE SORT ===");
-    println!("Original vector: {:?}", vec1);
-    sort::printer::print(&vec1);
-    sort::bubble::bubble_sort(&mut vec1);
-    println!("Sorted vector: {:?}", vec1);
-    
-    // Wait before next sort
-    std::thread::sleep(std::time::Duration::from_secs(2));
-    sort::printer::clear_screen();
-    
-    // Quick Sort with a new unsorted vector
-    let mut vec2 = vec![9, 1, 7, 4, 3, 6];
-    println!("=== QUICK SORT ===");
-    println!("Original vector: {:?}", vec2);
-    if vec2.len() > 0 {
-        let len = vec2.len();
-        sort::quick::quick_sort(&mut vec2, 0, len - 1);
+    println!("Welcome to the Sorting Visualizer!");
+    let mut vec: Vec<i32>;
+
+    loop {
+        sort::printer::clear_screen();
+        println!("------------------------------------------");
+        println!("| Enter a vector of integers:             |");
+        println!("| (e.g., 5 3 8 6 2)                       |");
+        println!("| Press Enter to exit                     |");
+        println!("------------------------------------------");
+        let mut input = String::new();
+        io::stdin().read_line(&mut input).unwrap();
+        vec = input
+            .trim()
+            .split_whitespace()
+            .filter_map(|s| s.parse::<i32>().ok())
+            .collect();
+        if input.is_empty() {
+            break;
+        }
+        sort::printer::clear_screen();
+
+        println!("------------------------------------------");
+        println!("| Chosed vector:                         |");
+        // Print the vector left-aligned and padded so the | are aligned
+        let vec_str = format!("{:?}", vec);
+        let total_width = 40; // width between the | symbols
+        let padded_vec = format!("{:<width$}", vec_str, width = total_width);
+        println!("|{}|", padded_vec);
+        println!("------------------------------------------");
+        println!("| Choose a sorting algorithm:            |");
+        println!("| 1. Bubble sort                         |");
+        println!("| 2. Quick sort                          |");
+        println!("| 3. Selection sort                      |");
+        println!("| 4. Insertion sort                      |");
+        println!("| 5. Merge sort                          |");
+        println!("| 6. Exit                                |");
+        println!("|                                        |");
+        println!("------------------------------------------");
+
+        let mut choice = String::new();
+        io::stdin().read_line(&mut choice).unwrap();
+        match choice.trim() {
+            "1" => {
+                println!("=== BUBBLE SORT ===");
+                sort::bubble::bubble_sort(&mut vec);
+                println!("Sorted vector: {:?}", vec);
+            }
+            "2" => {
+                println!("=== QUICK SORT ===");
+                if vec.len() > 0 {
+                    let len = vec.len();
+                    sort::quick::quick_sort(&mut vec, 0, len - 1);
+                }
+                println!("Sorted vector: {:?}", vec);
+            }
+            "3" => {
+                println!("=== SELECTION SORT ===");
+                sort::selection::selection_sort(&mut vec);
+                println!("Sorted vector: {:?}", vec);
+            }
+            "4" => {
+                println!("=== INSERTION SORT ===");
+                sort::insertion::insertion_sort(&mut vec);
+                println!("Sorted vector: {:?}", vec);
+            }
+            "5" => {
+                println!("=== MERGE SORT ===");
+                sort::merge::merge_sort(&mut vec);
+                println!("Sorted vector: {:?}", vec);
+
+            }
+            "6" => break,
+            _ => println!("Invalid choice, please try again."),
+        }
+        println!("Press Enter to continue...");
+        let mut dummy = String::new();
+        io::stdin().read_line(&mut dummy).unwrap();
+        
+
+        
+
     }
-    println!("Sorted vector: {:?}", vec2);
-
-    // Wait before next sort
-    std::thread::sleep(std::time::Duration::from_secs(2));
-    sort::printer::clear_screen();
-
-    // Selection Sort with a new unsorted vector
-    let mut vec3 = vec![4, 2, 5, 1, 3, 6, 8, 7, 9, 0, 10];
-    println!("=== SELECTION SORT ===");
-    println!("Original vector: {:?}", vec3);
-    sort::selection::selection_sort(&mut vec3);
-    println!("Sorted vector: {:?}", vec3);
-
-    // Wait before next sort
-    std::thread::sleep(std::time::Duration::from_secs(2));
-    sort::printer::clear_screen();
-
-    // Insertion Sort with a new unsorted vector
-    let mut vec4 = vec![10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
-    println!("=== INSERTION SORT ===");
-    println!("Original vector: {:?}", vec4);
-    sort::insertion::insertion_sort(&mut vec4);
-    println!("Sorted vector: {:?}", vec4);
-
-    // Wait before next sort
-    std::thread::sleep(std::time::Duration::from_secs(2));
-    sort::printer::clear_screen();  
-
-    // Merge Sort with a new unsorted vector
-    let mut vec5 = vec![12, 11, 13, 5, 6, 7, 14, 10];
-    println!("=== MERGE SORT ===");
-    println!("Original vector: {:?}", vec5);
-    sort::merge::merge_sort(&mut vec5);
-    println!("Sorted vector: {:?}", vec5);
-    
     
 }
