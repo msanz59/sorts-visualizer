@@ -4,7 +4,7 @@ pub fn print(vec: &[i32]) {
     let lon = vec.len();
     let max = *vec.iter().max().unwrap_or(&0);
     for i in (1..=max).rev() {
-        print!("{}: ", i); // Print the current level
+        print!("{}: \t", i); // Print the current level
         for &value in vec {
             if value >= i {
                 print!("* ");
@@ -14,7 +14,7 @@ pub fn print(vec: &[i32]) {
         }
         println!();
     }
-    print!("  ");
+    print!("   ===="); // Print the base line
     println!("{}", "==".repeat(lon)); // Print a line of underscores to represent the base
     
 }
